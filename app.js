@@ -18,7 +18,14 @@ if (command === 'add') {
     }
     
 } else if (command === 'list') {
-    notes.getAll();
+    const allNotes = notes.getAll();
+    console.log(`Prints ${allNotes.length} note(s)`);
+    
+    allNotes.forEach((note, idx) => {
+        const message = `Note # ${idx + 1}`;
+        notes.logNote(note, message, console.log);
+    });
+    
 
 } else if (command === 'remove') {
     const isRemoved = notes.removeNote(argv.title);
