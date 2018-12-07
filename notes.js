@@ -7,17 +7,17 @@ const fetchNotes = () => {
     } catch (e) { 
         return [];
     }
-}
+};
 
 const saveNotes = (notes) => {
     fs.writeFileSync('data.json', JSON.stringify(notes));
-}
+};
 
 const addNote = (title, body) => {
-    let notes = fetchNotes();
+    const notes = fetchNotes();
     const note = {title, body};
 
-    let isDublicate = notes.some(note => note.title === title );
+    const isDublicate = notes.some(note => note.title === title );
 
     if(!isDublicate) {
         notes.push(note);
@@ -28,20 +28,36 @@ const addNote = (title, body) => {
 
 const getAll = () => {
     console.log('Getting all notes');   
-}
+};
 
 const removeNote = (title) => {
-    console.log('removing');
-}
+    const notes = fetchNotes();
+    const filteredNotes = notes.filter(note => note.title !== title);
+    saveNotes(filteredNotes);
+
+    return notes.length !== filteredNotes.length;
+};
 
 const readNote = (title) => {
-    console.log('Reading');
-}
+    const notes = fetchNotes();
+    for(let note of notes) {
+       if(note.title === title) {
+           return note;
+       }
+    }
+};
 
+const logNote = (note, message, fn) => {
+    fn(message);
+    fn('----');
+    fn(`Title: ${note.title}`);
+    fn(`Body: ${note.body}`);   
+};
 
 module.exports = {
     addNote,
     getAll,
     removeNote,
-    readNote
+    readNote,
+    logNote
 }
